@@ -1,0 +1,59 @@
+# Copyright (C) 2023 Gramine contributors
+# SPDX-License-Identifier: BSD-3-Clause
+
+# Redis manifest file example
+
+################################## GRAMINE ####################################
+
+# Entrypoint binary which Gramine invokes.
+libos.entrypoint = "gramine_run"
+loader.log_level = "{{ log_level }}"
+
+################################# ARGUMENTS ###################################
+
+# loader.argv = ["bash", "gramine_bash.sh"]
+# loader.argv = ["redis-server", "/etc/redis.conf"]
+
+################################# ENV VARS ####################################
+
+loader.env.LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
+
+################################## SIGNALS ####################################
+
+sys.enable_sigterm_injection = true
+
+################################# MOUNT FS ####################################
+
+fs.mounts = [
+
+  { path = "/lib", uri = "file:{{ gramine.runtimedir() }}" },
+
+  { path = "/redis-server", uri = "file:redis-server" },
+  { path = "/conf", uri = "file:conf" },
+  { path = "/bash", uri = "file:/bin/bash" },
+  { path = "/gramine_run", uri = "file:gramine_run" },
+  { path = "/gramine_bash.sh", uri = "file:gramine_bash.sh" },
+  { type = "encrypted", path = "/etc", uri = "file:etc", key_name = "_sgx_mrenclave"  },
+]
+
+############################### SGX: GENERAL ##################################
+
+sgx.debug = true
+
+sgx.enclave_size = "1024M"
+
+sgx.edmm_enable = {{ 'true' if env.get('EDMM', '0') == '1' else 'false' }}
+
+sgx.max_threads = 256
+
+############################# SGX: TRUSTED FILES ###############################
+
+sgx.trusted_files = [
+  "file:redis-server",
+  "file:{{ gramine.runtimedir() }}/",
+  "file:conf/",
+  "file:/bin/bash",
+  "file:gramine_run",
+  "file:gramine_bash.sh",
+  "file:/lib/x86_64-linux-gnu/libtinfo.so.6",
+]
