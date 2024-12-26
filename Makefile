@@ -54,7 +54,7 @@ gramine_run: gramine_run.c
 # is the final executable "src/redis-server".
 
 $(SRCDIR)/Makefile:
-	../common_tools/download --output redis.tar.gz \
+	./common_tools/download --output redis.tar.gz \
 		--sha256 $(TAR_SHA256) \
 		--url https://github.com/antirez/redis/archive/$(COMMIT).tar.gz \
 		--url https://packages.gramineproject.io/distfiles/redis-$(COMMIT).tar.gz
