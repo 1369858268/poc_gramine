@@ -21,14 +21,6 @@ cd bash_redis
 
 ### Run the demo
 
-#### Make sure that the victim Redis program works
-
-Open a terminal for the victim. Run `gramine-sgx redis-server`, checking if the Redis server works well.
-
-Using command `redis-cli -h $Redis_Server_IP -p $Redis_Server_Port -a admin123456` to verify whether the password (admin123456) has been set in the config file.
-
-Press `ctrl + C` to terminate the Redis server.
-
 #### Snapshot capture
 
 Prepare 2 terminals, one for the victim and one for the attacker. You can only open one more terminal (for the attacker) if one terminal has been opened already for the victim.
