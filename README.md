@@ -1,4 +1,3 @@
-```
 # Snapshot Attack Demo
 
 This is the demo of Unanticipated Snapshot Attack against Gramine.
