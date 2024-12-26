@@ -35,7 +35,7 @@ GRAMINE_LOG_LEVEL = error
 endif
 
 .PHONY: all
-all: gramine_run redis-server redis-server.manifest conf/load_and_encrypt_config
+all: gramine_run redis-server redis-server.manifest
 ifeq ($(SGX),1)
 all: redis-server.manifest.sgx redis-server.sig
 endif
@@ -86,11 +86,6 @@ redis-server.sig redis-server.manifest.sgx &: redis-server.manifest
 		--manifest redis-server.manifest \
 		--output redis-server.manifest.sgx
 
-######################## LOAD_AND_ENCRYPT_CONFIG BUILD ########################
-
-conf/load_and_encrypt_config: conf/load_and_encrypt_config.c
-	$(CC) -o $@ $<
-
 ############################## RUNNING TESTS ##################################
 
 .PHONY: start-native-server
@@ -111,7 +106,7 @@ start-gramine-server: all
 
 .PHONY: clean
 clean:
-	$(RM) *.sig *.manifest.sgx *.manifest redis-server *.rdb gramine_run conf/load_and_encrypt_config
+	$(RM) *.sig *.manifest.sgx *.manifest redis-server *.rdb gramine_run
 
 .PHONY: distclean
 distclean: clean
